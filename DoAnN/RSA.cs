@@ -2,6 +2,7 @@
 using System.Numerics;
 using System.Text;
 using System.Windows.Forms;
+using System.Security.Cryptography;
 
 namespace DoAnN
 {
@@ -12,25 +13,79 @@ namespace DoAnN
         public RSA()
         {
             InitializeComponent();
-            rsa = new RSAEncryption(512); // Tạo khóa RSA với độ dài 512-bit
         }
+
+        private void btnGenerateKeys_Click(object sender, EventArgs e)
+        {
+            rsa = new RSAEncryption(512); // Tạo khóa với 512-bit
+            var publicKey = rsa.GetPublicKey();
+            var privateKey = rsa.GetPrivateKey();
+
+            // Hiển thị Public và Private Key
+            txtPublicKey.Text = $"e: {publicKey.e}\nn: {publicKey.n}";
+            txtPrivateKey.Text = $"d: {privateKey}\nn: {publicKey.n}";
+        }
+
 
         private void btnRSAEncrypt_Click(object sender, EventArgs e)
         {
-            string plaintext = txtRSAPlaintext.Text;
-            BigInteger plaintextNum = new BigInteger(Encoding.UTF8.GetBytes(plaintext));
-            BigInteger ciphertext = rsa.Encrypt(plaintextNum);
+            try
+            {
+                string plaintext = txtPlaintext.Text;
+                StringBuilder ciphertextBuilder = new StringBuilder();
 
-            txtRSACiphertext.Text = ciphertext.ToString();
+                // Lấy e và n từ TextBox Public Key
+                string[] publicKeyParts = txtPublicKey.Text.Split(new[] { '\n', ':', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                BigInteger ee = BigInteger.Parse(publicKeyParts[1]);
+                BigInteger n = BigInteger.Parse(publicKeyParts[3]);
+
+                // Mã hóa từng ký tự của chuỗi
+                foreach (char c in plaintext)
+                {
+                    // Chuyển ký tự thành mã ASCII (hoặc bạn có thể dùng UTF-8)
+                    BigInteger plaintextNum = new BigInteger(Encoding.UTF8.GetBytes(c.ToString()));
+
+                    // Mã hóa ký tự
+                    BigInteger ciphertext = BigInteger.ModPow(plaintextNum, ee, n);
+
+                    // Ghép các kết quả mã hóa lại thành chuỗi
+                    ciphertextBuilder.Append(ciphertext.ToString() + " ");
+                }
+
+                // Hiển thị kết quả mã hóa
+                txtRSACiphertext.Text = ciphertextBuilder.ToString().Trim();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi mã hóa: {ex.Message}");
+            }
         }
+
 
         private void btnRSADecrypt_Click(object sender, EventArgs e)
         {
-            BigInteger ciphertext = BigInteger.Parse(txtRSACiphertext.Text);
-            BigInteger plaintextNum = rsa.Decrypt(ciphertext);
-            string plaintext = Encoding.UTF8.GetString(plaintextNum.ToByteArray());
+            try
+            {
+                BigInteger ciphertext = BigInteger.Parse(txtRSACiphertext.Text);
 
-            txtRSAPlaintext.Text = plaintext;
+                // Lấy d và n từ TextBox Private Key
+                string[] privateKeyParts = txtPrivateKey.Text.Split(new[] { '\n', ':', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                BigInteger d = BigInteger.Parse(privateKeyParts[1]);
+              //  textBox1.Text += d.ToString();
+                BigInteger n = BigInteger.Parse(privateKeyParts[3]);
+                //textBox2 .Text += n.ToString();
+
+                // Giải mã
+                BigInteger plaintextNum = BigInteger.ModPow(ciphertext, d, n);
+                textBox1.Text=plaintextNum.ToString();
+                string plaintext = Encoding.UTF8.GetString(plaintextNum.ToByteArrayUnsigned());
+
+                txtPlaintext.Text = plaintext;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi giải mã: {ex.Message}");
+            }
         }
     }
 
@@ -52,11 +107,11 @@ namespace DoAnN
             BigInteger q = GeneratePrime(keySize / 2);
             n = p * q;
 
-            // Tính phi(n) = (p-1)*(q-1)
+            // Tính phi(n)
             BigInteger phi = (p - 1) * (q - 1);
 
             // Chọn e sao cho gcd(e, phi) = 1
-            e = 65537; // Giá trị phổ biến cho e
+            e = 65537; // Giá trị phổ biến
             while (BigInteger.GreatestCommonDivisor(e, phi) != 1)
             {
                 e++;
@@ -66,17 +121,8 @@ namespace DoAnN
             d = ModInverse(e, phi);
         }
 
-        public (BigInteger, BigInteger) GetPublicKey() => (e, n);
-
-        public BigInteger Encrypt(BigInteger plaintext)
-        {
-            return BigInteger.ModPow(plaintext, e, n);
-        }
-
-        public BigInteger Decrypt(BigInteger ciphertext)
-        {
-            return BigInteger.ModPow(ciphertext, d, n);
-        }
+        public (BigInteger e, BigInteger n) GetPublicKey() => (e, n);
+        public BigInteger GetPrivateKey() => d;
 
         private BigInteger GeneratePrime(int bitLength)
         {
@@ -88,31 +134,18 @@ namespace DoAnN
             return prime;
         }
 
-        private static BigInteger GenerateRandomBigInteger(int bitLength)
+        private BigInteger GenerateRandomBigInteger(int bitLength)
         {
-            if (bitLength <= 0)
-                throw new ArgumentException("Bit length must be a positive number.");
-
-            int byteLength = (bitLength + 7) / 8; // Số byte cần thiết
+            int byteLength = (bitLength + 7) / 8;
             byte[] randomBytes = new byte[byteLength];
 
-            Random random = new Random();
-            random.NextBytes(randomBytes);
-
-            // Đảm bảo số là không dấu
-            return CreateUnsignedBigInteger(randomBytes);
-        }
-
-        private static BigInteger CreateUnsignedBigInteger(byte[] bytes)
-        {
-            // Nếu byte đầu tiên có bit cao nhất là 1, thêm byte 0x00 ở đầu
-            if ((bytes[0] & 0x80) != 0)
+            using (var rng = new RNGCryptoServiceProvider())
             {
-                byte[] temp = new byte[bytes.Length + 1];
-                Array.Copy(bytes, 0, temp, 1, bytes.Length);
-                bytes = temp;
+                rng.GetBytes(randomBytes);
             }
-            return new BigInteger(bytes);
+
+            randomBytes[randomBytes.Length - 1] &= (byte)(0xFF >> (8 - bitLength % 8));
+            return new BigInteger(randomBytes);
         }
 
         private static BigInteger ModInverse(BigInteger a, BigInteger m)
@@ -164,20 +197,35 @@ namespace DoAnN
             return true;
         }
 
-        private static BigInteger RandomIntegerBelow(BigInteger max)
+        private static BigInteger RandomIntegerBelow(BigInteger upperLimit)
         {
-            byte[] bytes = max.ToByteArray();
-            BigInteger result;
-            Random random = new Random();
+            byte[] bytes = upperLimit.ToByteArray();
+            BigInteger randomValue;
 
-            do
+            using (var rng = new RNGCryptoServiceProvider())
             {
-                random.NextBytes(bytes);
-                bytes[bytes.Length - 1] &= 0x7F; // Đảm bảo số dương
-                result = new BigInteger(bytes);
-            } while (result >= max);
+                do
+                {
+                    rng.GetBytes(bytes);
+                    bytes[bytes.Length - 1] &= (byte)0x7F; // Đảm bảo giá trị dương
+                    randomValue = new BigInteger(bytes);
+                } while (randomValue >= upperLimit || randomValue < 2);
+            }
 
-            return result;
+            return randomValue;
+        }
+    }
+
+    public static class BigIntegerExtensions
+    {
+        public static byte[] ToByteArrayUnsigned(this BigInteger bigInteger)
+        {
+            byte[] bytes = bigInteger.ToByteArray();
+            if (bytes[bytes.Length - 1] == 0)
+            {
+                Array.Resize(ref bytes, bytes.Length - 1);
+            }
+            return bytes;
         }
     }
 }
