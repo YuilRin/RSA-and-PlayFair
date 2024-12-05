@@ -11,9 +11,9 @@ using System.Numerics;
 
 namespace DoAnN
 {
-    public partial class Form1 : Form
+    public partial class PlayFair : Form
     {
-        public Form1()
+        public PlayFair()
         {
             InitializeComponent();
         }

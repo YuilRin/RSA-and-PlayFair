@@ -1,6 +1,6 @@
 ﻿namespace DoAnN
 {
-    partial class Form1
+    partial class PlayFair
     {
         /// <summary>
         /// Required designer variable.

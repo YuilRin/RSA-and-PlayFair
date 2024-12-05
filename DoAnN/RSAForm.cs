@@ -8,7 +8,7 @@ namespace DoAnN
 {
     public partial class RSAForm : Form
     {
-        private BigInteger p, q, n, phi, ee, d;
+        private BigInteger p=0, q=0, n = 0, phi = 0, ee = 0, d = 0;
 
         public RSAForm()
         {
@@ -64,10 +64,7 @@ namespace DoAnN
             Random rnd = new Random();
             do
             {
-
-
                 p = GeneratePrime(rnd);
-
                 q = GeneratePrime(rnd);
             }
             while (p==q);
@@ -92,6 +89,46 @@ namespace DoAnN
                 BigInteger candidate = rnd.Next(1000, 5000); // Tùy chỉnh dải số nguyên tố
                 if (IsPrime(candidate))
                     return candidate;
+            }
+        }
+
+        private void edt_P_Changed(object sender, EventArgs e)
+        {
+            p = BigInteger.Parse(txtP.Text);
+            if (IsPrime(p) && IsPrime(q) && p!=q && p*q>=128)
+            {
+                Random rnd = new Random();
+                n = p * q;
+                phi = (p - 1) * (q - 1);
+                do
+                {
+                    ee = rnd.Next(2, (int)phi);
+                }   while (Gcd(ee, phi) != 1);
+
+                d = ModInverse(ee, phi);
+               
+                txtPublicKey.Text = $"e: {ee}, n: {n}";
+                txtPrivateKey.Text = $"d: {d}, n: {n}";
+            }    
+        }
+
+        private void edt_Q_Changed(object sender, EventArgs e)
+        {
+            q = BigInteger.Parse(txtQ.Text);
+            if (IsPrime(p) && IsPrime(q) && p!=q && p*q>=128)
+            {
+                Random rnd = new Random();
+                n = p * q;
+                phi = (p - 1) * (q - 1);
+                do
+                {
+                    ee = rnd.Next(2, (int)phi);
+                } while (Gcd(ee, phi) != 1);
+
+                d = ModInverse(ee, phi);
+                
+                txtPublicKey.Text = $"e: {ee}, n: {n} {p}   {q}";
+                txtPrivateKey.Text = $"d: {d}, n: {n}";
             }
         }
 
@@ -125,7 +162,10 @@ namespace DoAnN
         private void btnGenerateKeys_Click(object sender, EventArgs e)
         {
             GenerateKeyPair();
-            txtPublicKey.Text = $"e: {ee}, n: {n}, p: {p}, q: {q};";
+            txtP.Text=$"{p}";
+            txtQ.Text=$"{q}";
+
+            txtPublicKey.Text = $"e: {ee}, n: {n}";
             txtPrivateKey.Text = $"d: {d}, n: {n}";
         }
 
@@ -143,7 +183,7 @@ namespace DoAnN
 
         private void btnDecrypt_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtCiphertext.Text))
+            if (string.IsNullOrEmpty(txtCiphertext2.Text))
             {
                 MessageBox.Show("Vui lòng nhập bản mã cần giải mã.");
                 return;
