@@ -52,6 +52,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtCiphertext2 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.lbMess = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -139,7 +140,7 @@
             this.txtP.Name = "txtP";
             this.txtP.Size = new System.Drawing.Size(76, 22);
             this.txtP.TabIndex = 9;
-            this.txtP.TextChanged += new System.EventHandler(this.edt_P_Changed);
+            this.txtP.TextChanged += new System.EventHandler(this.edt_Q_Changed);
             // 
             // label1
             // 
@@ -295,11 +296,20 @@
             this.label7.Text = "RSA with BigNumber";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lbMess
+            // 
+            this.lbMess.AutoSize = true;
+            this.lbMess.Location = new System.Drawing.Point(290, 234);
+            this.lbMess.Name = "lbMess";
+            this.lbMess.Size = new System.Drawing.Size(0, 16);
+            this.lbMess.TabIndex = 14;
+            // 
             // RSAForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lbMess);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -350,5 +360,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtCiphertext2;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label lbMess;
     }
 }

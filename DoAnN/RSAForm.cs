@@ -61,6 +61,7 @@ namespace DoAnN
         private void GenerateKeyPair()
         {
             // Tạo số nguyên tố p và q
+            lbMess.Text="Lấy mã tự động thành công";
             Random rnd = new Random();
             do
             {
@@ -68,17 +69,21 @@ namespace DoAnN
                 q = GeneratePrime(rnd);
             }
             while (p==q);
+            FindNumberNeed();
+        }
 
+        private void FindNumberNeed()
+        {
+            
+            Random rnd = new Random();
             n = p * q;
             phi = (p - 1) * (q - 1);
 
-            // Chọn e sao cho gcd(e, phi) = 1
             do
             {
                 ee = rnd.Next(2, (int)phi);
             } while (Gcd(ee, phi) != 1);
 
-            // Tính d = e^(-1) mod phi
             d = ModInverse(ee, phi);
         }
 
@@ -92,42 +97,53 @@ namespace DoAnN
             }
         }
 
-        private void edt_P_Changed(object sender, EventArgs e)
-        {
-            p = BigInteger.Parse(txtP.Text);
-            if (IsPrime(p) && IsPrime(q) && p!=q && p*q>=128)
-            {
-                Random rnd = new Random();
-                n = p * q;
-                phi = (p - 1) * (q - 1);
-                do
-                {
-                    ee = rnd.Next(2, (int)phi);
-                }   while (Gcd(ee, phi) != 1);
-
-                d = ModInverse(ee, phi);
-               
-                txtPublicKey.Text = $"e: {ee}, n: {n}";
-                txtPrivateKey.Text = $"d: {d}, n: {n}";
-            }    
-        }
-
         private void edt_Q_Changed(object sender, EventArgs e)
         {
-            q = BigInteger.Parse(txtQ.Text);
-            if (IsPrime(p) && IsPrime(q) && p!=q && p*q>=128)
+            editChanged();
+        }
+        private void editChanged()
+        {
+            if (txtP.Text.Length == 0)
             {
-                Random rnd = new Random();
-                n = p * q;
-                phi = (p - 1) * (q - 1);
-                do
-                {
-                    ee = rnd.Next(2, (int)phi);
-                } while (Gcd(ee, phi) != 1);
+                lbMess.Text = "Chú ý Hãy nhập P";
+                return;
+            }
+            if (txtQ.Text.Length == 0)
+            {
+                lbMess.Text = "Chú ý Hãy nhập Q";
+                return;
+            }
+            q = BigInteger.Parse(txtQ.Text);
+            p = BigInteger.Parse(txtP.Text);
+            if (!IsPrime(p))
+            {
+                lbMess.Text = "Chú ý P phải là số nguyên tố";
+                return;
+            }
+            else
+            if (!IsPrime(q))
+            {
+                lbMess.Text = "Chú ý Q phải là số nguyên tố";
+                return;
+            }
+            else
+            if (p == q)
+            {
+                lbMess.Text="Chú ý: Q và P phải khác nhau";
+                return;
+            }
+            else
+            if (p*q<128)
+            {
+                lbMess.Text="Chú ý: Q*P phải lớn hơn 128";
+                return;
+            }
+            else
+            {
+                lbMess.Text="";
+                FindNumberNeed();
 
-                d = ModInverse(ee, phi);
-                
-                txtPublicKey.Text = $"e: {ee}, n: {n} {p}   {q}";
+                txtPublicKey.Text = $"e: {ee}, n: {n}    {p}   {q}";
                 txtPrivateKey.Text = $"d: {d}, n: {n}";
             }
         }
@@ -165,7 +181,7 @@ namespace DoAnN
             txtP.Text=$"{p}";
             txtQ.Text=$"{q}";
 
-            txtPublicKey.Text = $"e: {ee}, n: {n}";
+            txtPublicKey.Text = $"e: {ee}, n: {n}          {p}   {q}";
             txtPrivateKey.Text = $"d: {d}, n: {n}";
         }
 
@@ -189,7 +205,7 @@ namespace DoAnN
                 return;
             }
 
-            string plaintext = Decrypt(txtCiphertext.Text);
+            string plaintext = Decrypt(txtCiphertext2.Text);
             txtDecrypted.Text = plaintext;
         }
     }
