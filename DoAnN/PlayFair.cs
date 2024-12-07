@@ -32,12 +32,12 @@ namespace DoAnN
         private void btnDecrypt_Click(object sender, EventArgs e)
         {
             string key = txtKey.Text;
-            string plaintext = txtPlaintext.Text;
+            string plaintext = tPlaintext2.Text;
 
             PlayfairCipher cipher = new PlayfairCipher(key);
             string ciphertext = cipher.Decrypt(plaintext);
 
-            txtCiphertext.Text = ciphertext;
+            txtDecrypt.Text = ciphertext;
         }
     }
     public class PlayfairCipher

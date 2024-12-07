@@ -35,32 +35,44 @@
             this.btnDecrypt = new System.Windows.Forms.Button();
             this.lbKey = new System.Windows.Forms.Label();
             this.lbText = new System.Windows.Forms.Label();
+            this.lbName = new System.Windows.Forms.Label();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tPlaintext2 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtDecrypt = new System.Windows.Forms.TextBox();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtKey
             // 
             this.txtKey.Location = new System.Drawing.Point(89, 53);
             this.txtKey.Name = "txtKey";
-            this.txtKey.Size = new System.Drawing.Size(100, 22);
+            this.txtKey.Size = new System.Drawing.Size(199, 22);
             this.txtKey.TabIndex = 0;
             // 
             // txtPlaintext
             // 
-            this.txtPlaintext.Location = new System.Drawing.Point(89, 102);
+            this.txtPlaintext.Location = new System.Drawing.Point(6, 22);
+            this.txtPlaintext.Multiline = true;
             this.txtPlaintext.Name = "txtPlaintext";
-            this.txtPlaintext.Size = new System.Drawing.Size(100, 22);
+            this.txtPlaintext.Size = new System.Drawing.Size(246, 85);
             this.txtPlaintext.TabIndex = 1;
             // 
             // txtCiphertext
             // 
-            this.txtCiphertext.Location = new System.Drawing.Point(89, 273);
+            this.txtCiphertext.Location = new System.Drawing.Point(6, 142);
+            this.txtCiphertext.Multiline = true;
             this.txtCiphertext.Name = "txtCiphertext";
-            this.txtCiphertext.Size = new System.Drawing.Size(100, 22);
+            this.txtCiphertext.Size = new System.Drawing.Size(246, 84);
             this.txtCiphertext.TabIndex = 2;
             // 
             // btnEncrypt
             // 
-            this.btnEncrypt.Location = new System.Drawing.Point(114, 186);
+            this.btnEncrypt.Location = new System.Drawing.Point(177, 113);
             this.btnEncrypt.Name = "btnEncrypt";
             this.btnEncrypt.Size = new System.Drawing.Size(75, 23);
             this.btnEncrypt.TabIndex = 3;
@@ -70,7 +82,7 @@
             // 
             // btnDecrypt
             // 
-            this.btnDecrypt.Location = new System.Drawing.Point(114, 224);
+            this.btnDecrypt.Location = new System.Drawing.Point(177, 115);
             this.btnDecrypt.Name = "btnDecrypt";
             this.btnDecrypt.Size = new System.Drawing.Size(75, 23);
             this.btnDecrypt.TabIndex = 4;
@@ -90,26 +102,102 @@
             // lbText
             // 
             this.lbText.AutoSize = true;
-            this.lbText.Location = new System.Drawing.Point(40, 105);
+            this.lbText.Location = new System.Drawing.Point(6, 3);
             this.lbText.Name = "lbText";
             this.lbText.Size = new System.Drawing.Size(33, 16);
             this.lbText.TabIndex = 5;
             this.lbText.Text = "Text";
             // 
-            // Form1
+            // lbName
+            // 
+            this.lbName.AutoSize = true;
+            this.lbName.Font = new System.Drawing.Font("Times New Roman", 13.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbName.Location = new System.Drawing.Point(96, 9);
+            this.lbName.Name = "lbName";
+            this.lbName.Size = new System.Drawing.Size(131, 26);
+            this.lbName.TabIndex = 11;
+            this.lbName.Text = "Playfair 5x5";
+            this.lbName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(32, 117);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(266, 261);
+            this.tabControl1.TabIndex = 12;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.txtPlaintext);
+            this.tabPage1.Controls.Add(this.lbText);
+            this.tabPage1.Controls.Add(this.btnEncrypt);
+            this.tabPage1.Controls.Add(this.txtCiphertext);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(258, 232);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Encrypt";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.tPlaintext2);
+            this.tabPage2.Controls.Add(this.label1);
+            this.tabPage2.Controls.Add(this.txtDecrypt);
+            this.tabPage2.Controls.Add(this.btnDecrypt);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(258, 232);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Decrypt";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tPlaintext2
+            // 
+            this.tPlaintext2.Location = new System.Drawing.Point(6, 24);
+            this.tPlaintext2.Multiline = true;
+            this.tPlaintext2.Name = "tPlaintext2";
+            this.tPlaintext2.Size = new System.Drawing.Size(246, 85);
+            this.tPlaintext2.TabIndex = 6;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 5);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(33, 16);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Text";
+            // 
+            // txtDecrypt
+            // 
+            this.txtDecrypt.Location = new System.Drawing.Point(6, 144);
+            this.txtDecrypt.Multiline = true;
+            this.txtDecrypt.Name = "txtDecrypt";
+            this.txtDecrypt.Size = new System.Drawing.Size(246, 84);
+            this.txtDecrypt.TabIndex = 7;
+            // 
+            // PlayFair
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(218, 329);
-            this.Controls.Add(this.lbText);
+            this.ClientSize = new System.Drawing.Size(324, 399);
+            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.lbName);
             this.Controls.Add(this.lbKey);
-            this.Controls.Add(this.btnDecrypt);
-            this.Controls.Add(this.btnEncrypt);
-            this.Controls.Add(this.txtCiphertext);
-            this.Controls.Add(this.txtPlaintext);
             this.Controls.Add(this.txtKey);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "PlayFair";
+            this.Text = "Playfair";
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -124,6 +212,13 @@
         private System.Windows.Forms.Button btnDecrypt;
         private System.Windows.Forms.Label lbKey;
         private System.Windows.Forms.Label lbText;
+        private System.Windows.Forms.Label lbName;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TextBox tPlaintext2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtDecrypt;
     }
 }
 
