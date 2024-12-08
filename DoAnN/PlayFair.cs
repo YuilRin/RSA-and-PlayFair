@@ -39,6 +39,14 @@ namespace DoAnN
 
             txtDecrypt.Text = ciphertext;
         }
+
+        private void btnMove_Click(object sender, EventArgs e)
+        {        
+            tabControl1.SelectedIndex = 1;
+            tPlaintext2.Text=txtCiphertext.Text;
+            txtDecrypt.Text="";
+        }
+    
     }
     public class PlayfairCipher
     {
@@ -112,14 +120,48 @@ namespace DoAnN
                     result.Append(keyMatrix[row2, col1]);
                 }
             }
+            for (int i = 1; i < result.Length - 1; i++)
+            {
+                if (result[i] == 'X' && result[i - 1] == result[i + 1])
+                {
+                    result.Remove(i, 1);
+                    i--; // Lùi lại một bước để kiểm tra tiếp
+                }
+            }
+           
+            if (result.Length > 0 && result[result.Length - 1] == 'X')
+            {
+                result.Remove(result.Length - 1, 1);
+            }
+
 
             return result.ToString();
         }
 
 
+        private string ValidateInput(string input)
+        {
+            // Chỉ cho phép các ký tự từ bảng chữ cái (A-Z) và loại bỏ các ký tự không hợp lệ
+            StringBuilder validInput = new StringBuilder();
+            string validCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+            foreach (char c in input)
+            {
+                if (validCharacters.Contains(c))
+                {
+                    validInput.Append(c);
+                }
+            }
+            
+
+            return validInput.ToString();
+        }
+
         public string Encrypt(string text)
         {
+            text = ValidateInput(text.ToUpper());
             text = PrepareText(text.ToUpper().Replace("J", "I"));
+            
             StringBuilder result = new StringBuilder();
 
             for (int i = 0; i < text.Length; i += 2)

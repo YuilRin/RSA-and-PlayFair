@@ -38,6 +38,7 @@
             this.lbName = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnMove = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tPlaintext2 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -72,7 +73,7 @@
             // 
             // btnEncrypt
             // 
-            this.btnEncrypt.Location = new System.Drawing.Point(177, 113);
+            this.btnEncrypt.Location = new System.Drawing.Point(97, 113);
             this.btnEncrypt.Name = "btnEncrypt";
             this.btnEncrypt.Size = new System.Drawing.Size(75, 23);
             this.btnEncrypt.TabIndex = 3;
@@ -133,6 +134,7 @@
             // 
             this.tabPage1.Controls.Add(this.txtPlaintext);
             this.tabPage1.Controls.Add(this.lbText);
+            this.tabPage1.Controls.Add(this.btnMove);
             this.tabPage1.Controls.Add(this.btnEncrypt);
             this.tabPage1.Controls.Add(this.txtCiphertext);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
@@ -142,6 +144,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Encrypt";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // btnMove
+            // 
+            this.btnMove.Location = new System.Drawing.Point(177, 113);
+            this.btnMove.Name = "btnMove";
+            this.btnMove.Size = new System.Drawing.Size(75, 23);
+            this.btnMove.TabIndex = 3;
+            this.btnMove.Text = "Move -->";
+            this.btnMove.UseVisualStyleBackColor = true;
+            this.btnMove.Click += new System.EventHandler(this.btnMove_Click);
             // 
             // tabPage2
             // 
@@ -219,6 +231,7 @@
         private System.Windows.Forms.TextBox tPlaintext2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtDecrypt;
+        private System.Windows.Forms.Button btnMove;
     }
 }
 
