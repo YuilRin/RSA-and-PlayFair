@@ -43,6 +43,7 @@
             this.tPlaintext2 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtDecrypt = new System.Windows.Forms.TextBox();
+            this.cmbMatrixSize = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -62,6 +63,7 @@
             this.txtPlaintext.Name = "txtPlaintext";
             this.txtPlaintext.Size = new System.Drawing.Size(246, 85);
             this.txtPlaintext.TabIndex = 1;
+            this.txtPlaintext.TextChanged += new System.EventHandler(this.txtPlaintext_TextChanged);
             // 
             // txtCiphertext
             // 
@@ -115,9 +117,9 @@
             this.lbName.Font = new System.Drawing.Font("Times New Roman", 13.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbName.Location = new System.Drawing.Point(96, 9);
             this.lbName.Name = "lbName";
-            this.lbName.Size = new System.Drawing.Size(131, 26);
+            this.lbName.Size = new System.Drawing.Size(89, 26);
             this.lbName.TabIndex = 11;
-            this.lbName.Text = "Playfair 5x5";
+            this.lbName.Text = "Playfair";
             this.lbName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tabControl1
@@ -176,6 +178,7 @@
             this.tPlaintext2.Name = "tPlaintext2";
             this.tPlaintext2.Size = new System.Drawing.Size(246, 85);
             this.tPlaintext2.TabIndex = 6;
+            this.tPlaintext2.TextChanged += new System.EventHandler(this.tPlaintext2_TextChanged);
             // 
             // label1
             // 
@@ -194,11 +197,24 @@
             this.txtDecrypt.Size = new System.Drawing.Size(246, 84);
             this.txtDecrypt.TabIndex = 7;
             // 
+            // cmbMatrixSize
+            // 
+            this.cmbMatrixSize.FormattingEnabled = true;
+            this.cmbMatrixSize.Items.AddRange(new object[] {
+            "5x5",
+            "6x6"});
+            this.cmbMatrixSize.Location = new System.Drawing.Point(89, 81);
+            this.cmbMatrixSize.Name = "cmbMatrixSize";
+            this.cmbMatrixSize.Size = new System.Drawing.Size(147, 24);
+            this.cmbMatrixSize.TabIndex = 13;
+            this.cmbMatrixSize.SelectedIndexChanged += new System.EventHandler(this.cmbMatrixSize_SelectedIndexChanged);
+            // 
             // PlayFair
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(324, 399);
+            this.Controls.Add(this.cmbMatrixSize);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.lbName);
             this.Controls.Add(this.lbKey);
@@ -232,6 +248,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtDecrypt;
         private System.Windows.Forms.Button btnMove;
+        private System.Windows.Forms.ComboBox cmbMatrixSize;
     }
 }
 
