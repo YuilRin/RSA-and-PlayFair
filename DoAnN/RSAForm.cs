@@ -8,7 +8,7 @@ namespace DoAnN
 {
     public partial class RSAForm : Form
     {
-        private BigInteger p=0, q=0, n = 0, phi = 0, ee = 0, d = 0;
+        private BigInteger p = 0, q = 0, n = 0, phi = 0, ee = 0, d = 0;
 
         public RSAForm()
         {
@@ -60,7 +60,6 @@ namespace DoAnN
 
         private void GenerateKeyPair()
         {
-            // Tạo số nguyên tố p và q
             lbMess.Text="Lấy mã tự động thành công";
             Random rnd = new Random();
             do
@@ -68,13 +67,12 @@ namespace DoAnN
                 p = GeneratePrime(rnd);
                 q = GeneratePrime(rnd);
             }
-            while (p==q);
+            while (p == q);
             FindNumberNeed();
         }
 
         private void FindNumberNeed()
         {
-            
             Random rnd = new Random();
             n = p * q;
             phi = (p - 1) * (q - 1);
@@ -91,7 +89,7 @@ namespace DoAnN
         {
             while (true)
             {
-                BigInteger candidate = rnd.Next(1000, 5000); // Tùy chỉnh dải số nguyên tố
+                BigInteger candidate = rnd.Next(1000, 5000);
                 if (IsPrime(candidate))
                     return candidate;
             }
@@ -101,6 +99,7 @@ namespace DoAnN
         {
             editChanged();
         }
+
         private void editChanged()
         {
             if (txtP.Text.Length == 0)
@@ -120,32 +119,46 @@ namespace DoAnN
                 lbMess.Text = "Chú ý P phải là số nguyên tố";
                 return;
             }
-            else
-            if (!IsPrime(q))
+            else if (!IsPrime(q))
             {
                 lbMess.Text = "Chú ý Q phải là số nguyên tố";
                 return;
             }
-            else
-            if (p == q)
+            else if (p == q)
             {
-                lbMess.Text="Chú ý: Q và P phải khác nhau";
+                lbMess.Text = "Chú ý: Q và P phải khác nhau";
+                return;
+            }
+            else if (p * q < 128)
+            {
+                lbMess.Text = "Chú ý: Q*P phải lớn hơn 128";
                 return;
             }
             else
-            if (p*q<128)
             {
-                lbMess.Text="Chú ý: Q*P phải lớn hơn 128";
-                return;
-            }
-            else
-            {
-                lbMess.Text="";
+                lbMess.Text = "";
                 FindNumberNeed();
 
                 txtPublicKey.Text = $"e: {ee}, n: {n}    {p}   {q}";
                 txtPrivateKey.Text = $"d: {d}, n: {n}";
             }
+        }
+
+        private void btnMove_Click(object sender, EventArgs e)
+        {
+            tabControl1.SelectedIndex = 1;
+            txtCiphertext2.Text = txtCiphertext.Text;
+            txtDecrypted.Text = "";
+        }
+
+        private void txtCiphertext2_TextChanged(object sender, EventArgs e)
+        {
+            txtDecrypted.Text = null;
+        }
+
+        private void txtPlaintext_TextChanged(object sender, EventArgs e)
+        {
+            txtCiphertext.Text = null;
         }
 
         private string Encrypt(string plaintext)
@@ -178,8 +191,8 @@ namespace DoAnN
         private void btnGenerateKeys_Click(object sender, EventArgs e)
         {
             GenerateKeyPair();
-            txtP.Text=$"{p}";
-            txtQ.Text=$"{q}";
+            txtP.Text = $"{p}";
+            txtQ.Text = $"{q}";
 
             txtPublicKey.Text = $"e: {ee}, n: {n}          {p}   {q}";
             txtPrivateKey.Text = $"d: {d}, n: {n}";
@@ -207,6 +220,33 @@ namespace DoAnN
 
             string plaintext = Decrypt(txtCiphertext2.Text);
             txtDecrypted.Text = plaintext;
+        }
+
+        private void btnImportFromFile_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string fileContent = System.IO.File.ReadAllText(openFileDialog.FileName);
+                    txtPlaintext.Text = fileContent;
+                    MessageBox.Show("Dữ liệu đã được tải lên.");
+                }
+            }
+        }
+
+        private void btnExportToFile_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    System.IO.File.WriteAllText(saveFileDialog.FileName, txtDecrypted.Text);
+                    MessageBox.Show("Dữ liệu đã được xuất ra file.");
+                }
+            }
         }
     }
 }

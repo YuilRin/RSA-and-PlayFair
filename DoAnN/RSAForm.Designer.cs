@@ -48,11 +48,14 @@
             this.lbDecrypted = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnMove = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
             this.txtCiphertext2 = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.lbMess = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -62,6 +65,7 @@
             // 
             this.txtPublicKey.Location = new System.Drawing.Point(293, 139);
             this.txtPublicKey.Name = "txtPublicKey";
+            this.txtPublicKey.ReadOnly = true;
             this.txtPublicKey.Size = new System.Drawing.Size(465, 22);
             this.txtPublicKey.TabIndex = 0;
             // 
@@ -69,6 +73,7 @@
             // 
             this.txtPrivateKey.Location = new System.Drawing.Point(293, 199);
             this.txtPrivateKey.Name = "txtPrivateKey";
+            this.txtPrivateKey.ReadOnly = true;
             this.txtPrivateKey.Size = new System.Drawing.Size(465, 22);
             this.txtPrivateKey.TabIndex = 1;
             // 
@@ -78,6 +83,7 @@
             this.txtPlaintext.Name = "txtPlaintext";
             this.txtPlaintext.Size = new System.Drawing.Size(467, 22);
             this.txtPlaintext.TabIndex = 1;
+            this.txtPlaintext.TextChanged += new System.EventHandler(this.txtPlaintext_TextChanged);
             // 
             // txtCiphertext
             // 
@@ -88,9 +94,9 @@
             // 
             // txtDecrypted
             // 
-            this.txtDecrypted.Location = new System.Drawing.Point(136, 76);
+            this.txtDecrypted.Location = new System.Drawing.Point(133, 80);
             this.txtDecrypted.Name = "txtDecrypted";
-            this.txtDecrypted.Size = new System.Drawing.Size(467, 22);
+            this.txtDecrypted.Size = new System.Drawing.Size(451, 22);
             this.txtDecrypted.TabIndex = 2;
             // 
             // btnGenerateKeys
@@ -105,7 +111,7 @@
             // 
             // btnEncrypt
             // 
-            this.btnEncrypt.Location = new System.Drawing.Point(520, 50);
+            this.btnEncrypt.Location = new System.Drawing.Point(521, 51);
             this.btnEncrypt.Name = "btnEncrypt";
             this.btnEncrypt.Size = new System.Drawing.Size(75, 23);
             this.btnEncrypt.TabIndex = 4;
@@ -115,7 +121,7 @@
             // 
             // btnDecrypt
             // 
-            this.btnDecrypt.Location = new System.Drawing.Point(514, 51);
+            this.btnDecrypt.Location = new System.Drawing.Point(509, 51);
             this.btnDecrypt.Name = "btnDecrypt";
             this.btnDecrypt.Size = new System.Drawing.Size(75, 23);
             this.btnDecrypt.TabIndex = 5;
@@ -239,8 +245,10 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.lbPlaintext);
             this.tabPage1.Controls.Add(this.txtPlaintext);
+            this.tabPage1.Controls.Add(this.btnMove);
             this.tabPage1.Controls.Add(this.btnEncrypt);
             this.tabPage1.Controls.Add(this.lbCiphertext);
             this.tabPage1.Controls.Add(this.txtCiphertext);
@@ -252,8 +260,19 @@
             this.tabPage1.Text = "Encrypt";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // btnMove
+            // 
+            this.btnMove.Location = new System.Drawing.Point(601, 42);
+            this.btnMove.Name = "btnMove";
+            this.btnMove.Size = new System.Drawing.Size(56, 60);
+            this.btnMove.TabIndex = 4;
+            this.btnMove.Text = "Move -->";
+            this.btnMove.UseVisualStyleBackColor = true;
+            this.btnMove.Click += new System.EventHandler(this.btnMove_Click);
+            // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.button2);
             this.tabPage2.Controls.Add(this.label2);
             this.tabPage2.Controls.Add(this.txtCiphertext2);
             this.tabPage2.Controls.Add(this.txtDecrypted);
@@ -282,8 +301,9 @@
             // 
             this.txtCiphertext2.Location = new System.Drawing.Point(133, 23);
             this.txtCiphertext2.Name = "txtCiphertext2";
-            this.txtCiphertext2.Size = new System.Drawing.Size(467, 22);
+            this.txtCiphertext2.Size = new System.Drawing.Size(451, 22);
             this.txtCiphertext2.TabIndex = 12;
+            this.txtCiphertext2.TextChanged += new System.EventHandler(this.txtCiphertext2_TextChanged);
             // 
             // label7
             // 
@@ -303,6 +323,26 @@
             this.lbMess.Name = "lbMess";
             this.lbMess.Size = new System.Drawing.Size(0, 16);
             this.lbMess.TabIndex = 14;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(601, 13);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(56, 23);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "File";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.btnImportFromFile_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(592, 23);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(65, 79);
+            this.button2.TabIndex = 14;
+            this.button2.Text = "File";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.btnExportToFile_Click);
             // 
             // RSAForm
             // 
@@ -361,5 +401,8 @@
         private System.Windows.Forms.TextBox txtCiphertext2;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lbMess;
+        private System.Windows.Forms.Button btnMove;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }
