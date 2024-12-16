@@ -38,12 +38,14 @@
             this.lbName = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.btnMove = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tPlaintext2 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtDecrypt = new System.Windows.Forms.TextBox();
             this.cmbMatrixSize = new System.Windows.Forms.ComboBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -134,6 +136,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.txtPlaintext);
             this.tabPage1.Controls.Add(this.lbText);
             this.tabPage1.Controls.Add(this.btnMove);
@@ -147,6 +150,16 @@
             this.tabPage1.Text = "Encrypt";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(9, 113);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "File";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.btnImportFromFile_Click);
+            // 
             // btnMove
             // 
             this.btnMove.Location = new System.Drawing.Point(177, 113);
@@ -159,6 +172,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.button2);
             this.tabPage2.Controls.Add(this.tPlaintext2);
             this.tabPage2.Controls.Add(this.label1);
             this.tabPage2.Controls.Add(this.txtDecrypt);
@@ -209,6 +223,16 @@
             this.cmbMatrixSize.TabIndex = 13;
             this.cmbMatrixSize.SelectedIndexChanged += new System.EventHandler(this.cmbMatrixSize_SelectedIndexChanged);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(9, 115);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 9;
+            this.button2.Text = "File";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.btnExportToFile_Click);
+            // 
             // PlayFair
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -249,6 +273,8 @@
         private System.Windows.Forms.TextBox txtDecrypt;
         private System.Windows.Forms.Button btnMove;
         private System.Windows.Forms.ComboBox cmbMatrixSize;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }
 

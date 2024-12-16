@@ -66,6 +66,36 @@ namespace DoAnN
         {
             txtDecrypt.Text=null;  
         }
+
+     
+        private void btnImportFromFile_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string fileContent = System.IO.File.ReadAllText(openFileDialog.FileName);
+                    txtPlaintext.Text = fileContent;
+                    MessageBox.Show("Dữ liệu đã được tải lên.");
+                }
+            }
+        }
+
+        private void btnExportToFile_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    System.IO.File.WriteAllText(saveFileDialog.FileName, txtDecrypt.Text);
+                    MessageBox.Show("Dữ liệu đã được xuất ra file.");
+                }
+            }
+        }
+
+        
     }
     public class PlayfairCipher
     {
